@@ -1,0 +1,117 @@
+.title_screen, 
+.title_screen form  {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin: 12px;
+}
+
+.Appheader {
+    background-image: url("BASE_2.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: [first] auto [line2] auto [end];
+    grid-template-rows: [row1-start] 75px [row1-end] 440px [third-line] auto [last-line];
+     
+  }
+  
+.logoinicial{
+    /* background-color: lawngreen;    */
+    width:500px;
+    height: 450px;
+    padding-bottom: 80px;
+    grid-column: 8 / span 2;
+    grid-row: row1-end / 2;
+    position: relative;
+    align-items: center;
+    justify-content: top;
+    flex-direction: column;
+    text-align: center;
+    color: transparent ;
+    -webkit-text-stroke: 1px black;
+    font-family: 'Source Code Variable',Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 15px;
+    letter-spacing: 2px;
+    font-weight: lighter;
+    display: flex;
+  }
+  
+.Applogo {
+    height: 300px;
+    pointer-events:none;
+    }
+  
+  .bLogin{
+    position: absolute; 
+    bottom: 60px;
+    width: 300px;
+    height: 52px;
+    text-align: center;
+    background-color: transparent;
+    font-family: 'Source Code Variable',Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    font-weight: lighter;
+    color: black;
+  }
+  .bSignup{
+    position: absolute; 
+    bottom: 0;
+    width: 300px;
+    height: 52px;
+    text-align: center;
+    background-color: transparent;
+    font-family: 'Source Code Variable',Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    font-weight: lighter;
+    color: black;
+  }
+  
+  .PTEN{
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+  }
+  
+  .PT{
+    text-align: center;
+    background-color: transparent;
+    border: transparent;
+    font-family: 'Source Code Variable',Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    font-weight: lighter;
+    color: black; 
+  }
+  
+  .EN{
+    text-align: center;
+    background-color: transparent;
+    border: transparent;
+    font-family: 'Source Code Variable',Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    font-weight: lighter;
+    color: black;
+  }
+  
+  .PT:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .EN:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .bSignup:hover {
+    cursor: pointer;
+  
+  }
+  
+  .bLogin:hover{
+    cursor: pointer;
+  }
