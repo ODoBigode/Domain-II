@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { PlayerInventory, PlayerStats } from './GameComponents/playerUI';
 import { PresentOptions, StoryRender } from './GameComponents/storyAndOptions';
-import { BrowserRouter, Navigate, useNavigate } from "react-router-dom";
+import { BrowserRouter, useNavigate } from "react-router-dom";
 import logo from './GameComponents/logo.svg';
 import styles from './GameComponents/GameStyles.module.css';
 
@@ -25,7 +25,7 @@ export function UiRender(){
 function UiButton({url, handleClick}) {
     return (
         <div>
-            <button onClick={() => handleClick()}><img src={url}></img></button>
+            <button onClick={() => handleClick()}><img src={url} alt='UI button'></img></button>
         </div>
     )
 }
@@ -40,9 +40,9 @@ export function GameRender() {
     )
 }
 
-function UserCreation() {
+export function UserCreation() {
     const [email, setEmail] = useState('')
-    const [user, setUser] = useState('')
+    // const [user, setUser] = useState('')
     const [pass, setPass] = useState('')
     const [confirm , setConfirm] = useState('')
     let navigate = useNavigate();
@@ -72,11 +72,12 @@ function UserCreation() {
     
 }
 export function TitleScreen() {
-    
+    const [title, setTitle] = useState(false)
+    let navigate = useNavigate()
     // logo / imagem
     // nome
-    
-    return (    
+    //if (!title) {
+       return (    
           <div className={styles.Appheader}>
             <div className={styles.logoinicial}>
             <div>
@@ -88,7 +89,7 @@ export function TitleScreen() {
              <button className={styles.bLogin}>
               LOGIN
             </button>
-            <button className={styles.bSignup} onClick={UserCreation}>
+            <button className={styles.bSignup} onClick={() => navigate('/signup')  }>
               SIGN UP
             </button>
             </div>
@@ -107,8 +108,10 @@ export function TitleScreen() {
     
     
           </div>
-      );
+      ); 
 }
+    
+
 
 
 
