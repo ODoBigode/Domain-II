@@ -63,20 +63,20 @@ export function GameRender() {
 
 export function UserCreation() {
 
-    function HandleErr(values) {
+    function HandleErr(values, InfoId) {
         setErr( e => {
             let erros = {}
-            if (!validateEmail(values.email)) {
+            if (!validateEmail(values.email) && InfoId === 'email') {
                 erros.errMessageMail = 'O email inserido não é válido.'
                 console.log('erro em mail')
             }
 
-            if(checkPasswordStrength(values.pass) < 3) {
+            if((checkPasswordStrength(values.pass) < 3) && InfoId === 'password') {
                 erros.errMessagePass = 'A password inserida não é válida.'
                 console.log('erro em pass')
             }
 
-            if (pass !== values.confirm) {
+            if ((pass !== values.confirm && InfoId === 'password')) {
                 erros.errMessageConfirm = 'As passwords não coincidem.'
                 console.log('erro em confirm')
             }
@@ -88,7 +88,7 @@ export function UserCreation() {
     }
 
     function HandleUserInfo(values, InfoId) {
-        HandleErr(values)
+        HandleErr(values, InfoId)
         if (InfoId === 'email') return setEmail(values.email)
         if (InfoId === 'password') return setPass(values.pass)
         if (InfoId === 'confirm') return setConfirm(values.confirm)
