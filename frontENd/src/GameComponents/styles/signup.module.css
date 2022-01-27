@@ -1,0 +1,132 @@
+.Appheader {
+    background-image: url("BASE_2.svg"); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    min-height: 100vh;
+  }
+  
+  .logo {
+    height: 60px;
+    pointer-events:none;
+    display: block;
+    padding-top: 14px;
+    margin-left: auto;
+    margin-right: auto;
+    }
+  
+  .central{
+    width:800px;
+    height: 470px;
+    background-color: white;
+    opacity: 90%;
+    border: 2px solid #D8D8D8;
+    margin-top: 50px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+    }
+  
+  .titulo{
+    position: relative;
+    text-align: center;
+    margin-top: 35px;
+    font-family: 'Source Code Variable',Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 2px;
+    font-weight: lighter;
+    font-size: 18px;
+    color: black;
+  }
+  .email{
+    width:508px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    margin-top: 55px;
+  }
+  .SEmail{
+    position: relative;
+    margin-bottom:2px;
+  }
+  .iEmail{
+    width: 500px;
+    height: 32px;
+    background-color: white;
+    display: block;
+  }
+  .password{
+    width:508px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 22px;
+    position: relative;
+  }
+  .SPass{
+    position: relative;
+    margin-bottom:2px;
+  }
+  .iPass{
+    width: 500px;
+    height: 32px;
+    background-color: white;
+    display: flex;
+  }
+  
+  .PassInvalida{
+    position: relative;
+    text-align: center;
+    margin-top:5px;
+    color: #D60D0D;
+  }
+  .letsPlay{
+    width: 250px;
+    height: 40px;
+    text-align: center;
+    background-color: white;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+    font-family: 'Source Code Variable',Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 2px;
+    font-weight: lighter;
+    font-size: 12px;
+    color: black;
+    position:relative;
+    margin-top: 38px;
+  }
+  
+  .PTEN{
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+  }
+  
+  .PT , .EN{
+    text-align: center;
+    font-size: 12px;
+    background-color: transparent;
+    border: transparent;
+  }
+  
+  .PT:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .EN:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .bEmail:hover {
+    cursor: text;
+  }
+  .bPass:hover{
+    cursor: text;
+  }
+  .letsPlay:hover{
+    cursor: pointer;
+  }
+  

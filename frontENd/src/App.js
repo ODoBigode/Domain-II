@@ -1,10 +1,10 @@
 
 import './App.css';
 import React, { useState } from 'react';
-import { GameRender, TitleScreen, UserCreation } from './game';
+import { GameRender, TitleScreen, UserCreation, UserLogin } from './game';
 // import { StoryRender } from './GameComponents/storyAndOptions';
-import styles from './GameComponents/GameStyles.module.css';
-import logo from './GameComponents/logo.svg'; // Não esquece de implementar imagem
+// import styles from './GameComponents/GameStyles.module.css';
+// import logo from './GameComponents/logo.svg'; // Não esquece de implementar imagem
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 
 function App() {
@@ -16,8 +16,10 @@ function App() {
     <div className="App">
       {/* <GameRender />  */}
       <Routes>
-        <Route path='/signup' element={<UserCreation/>} />
+        <Route path='/api/signup' element={<UserCreation/>} />
         <Route path='/' element={<TitleScreen/>} />
+        <Route path='/api/login' element={<UserLogin />} />
+        <Route path='/api/game' element={<GameRender />}/>
         
       </Routes>
     </div>
@@ -25,9 +27,5 @@ function App() {
 
   
 }
-
-
-
-
 
 export default App;
