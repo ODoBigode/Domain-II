@@ -4,6 +4,7 @@ const port = process.env.PORT ?? 3007
 const { MongoClient, ObjectId } = require('mongodb')
 const URL = process.env.MONGO_URL ?? "mongodb://localhost:27017"
 
+
 let client
 
 
@@ -35,33 +36,90 @@ async function FindUserByEmail(email) {
     
 }
 
+function validateEmail(email) {
+  const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  return EMAIL_REGEX.test(email)
+}
+
+function validatePassword(password){
+  if(password.length <8) return false
+    const regexes= [
+      /[a-z]/g,
+      /[A-Z]/g,
+      /[0-9]/g,
+      /[~!@#$%^&*)(+=._-]/g,
+    ]
+    
+    let score= 0
+    const testes = []
+      for(const teste of regexes){  
+        testes.push(teste.test(password))
+      }
+      for(const result of testes){
+      score = result ? score + 1 : score
+      }
+    return score >3
+}
+
+  function validateConfirmation(passwordConfirmation, password) {
+        return passwordConfirmation === password 
+}
+
+async function insertUserMongo(user) {
+    const collection = await getMongoCollection('ProjectReadingHood', 'users')
+    collection.insertOne(user)
+    return;
+}
+
 app.use(express.json())
+
+
 
 // signup
 app.post('/api/signup', async (req, res) => {
     const { email, password, passwordConfirmation } = req.body
-    if (!validateEmail(email)) return res.sendStatus(400).json({errMessageMail})
 
-    if (FindUserByEmail(email) || email.length == 0 || password.length == 0) return res.sendStatus(400)
+    console.log("validateEmail", email, password, passwordConfirmation)
+    if (!validateEmail(email) || !validatePassword(password) || !validateConfirmation(passwordConfirmation, password)) return res.sendStatus(400)
+
+    if ((await FindUserByEmail(email)) || email.length == 0 || password.length == 0) return res.sendStatus(400)
 
     if (password !== passwordConfirmation) return res.status(400).json({errMessagePass})
 
-    if (password === passwordConfirmation && validateEmail(email)) return res.sendStatus(200)
+    if (password === passwordConfirmation && validateEmail(email)) {
+        insertUserMongo({email, password})
+
+        return res.sendStatus(200)
+
+    }
 })
  
+// app.get('api/login')
+app.get('/api/login', async (req, res) => {
 
+})
 
 // já tem conta faz login
 app.post('/api/login', async (req, res) =>{
     const { email, password } = req.body;
-    const users = await FindUserByEmail(email)
-    const passwordsMatch = users.password == password
+    console.log('trying')
+    //if (!validateEmail(email) || !validatePassword(password)) return res.sendStatus(400)
+    console.log('trying to get user')
+    const user = await FindUserByEmail(email)
+    console.log(user)
 
-    if (!users || !passwordsMatch) {
+    if(!user) return res.sendStatus(400)
+
+    const passwordsMatch = user.password == password
+
+    
+
+    if (!user || !passwordsMatch) {
        return res.sendStatus(400)
     }
     // eventualmente returnar um "_id"
-    res.sendStatus(200)
+    const token = createSession( )
+    res.status(200).json({token: user._id})
 })
 // buscar intems ao bau (caso implementado)
 

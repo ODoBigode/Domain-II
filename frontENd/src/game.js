@@ -9,8 +9,6 @@ import signstyles from './GameComponents/styles/signup.module.css';
 
 export function UiRender(){
     const [view, setView] = useState('')
-
-
     return(
         <div>
             <UiButton url='' handleClick={() => setView((v) => v === 'inventory' ? '' : 'inventory')}/>
@@ -33,9 +31,8 @@ function checkPasswordStrength(password) {
         .map(re => re.test(password))
         )
     return regexes
-    .map(re => re.test(password))
-    .reduce((score, t) => t ? score + 1 : score, 0)
-    
+    .map(re => re.test(password))  // return true ou false
+    .reduce((score, t) => t ? score + 1 : score, 0) //vê se é true, se sim, adiciona1 ao score. O score começa a 0
 }
 
 function validateEmail(email) {
@@ -63,20 +60,20 @@ export function GameRender() {
 
 export function UserCreation() {
 
-    function HandleErr(values, InfoId) {
+    function HandleErr(values) {
         setErr( e => {
             let erros = {}
-            if (!validateEmail(values.email) && InfoId === 'email') {
+            if (!validateEmail(values.email)) {
                 erros.errMessageMail = 'O email inserido não é válido.'
                 console.log('erro em mail')
             }
 
-            if((checkPasswordStrength(values.pass) < 3) && InfoId === 'password') {
+            if(checkPasswordStrength(values.pass) < 3) {
                 erros.errMessagePass = 'A password inserida não é válida.'
                 console.log('erro em pass')
             }
 
-            if ((pass !== values.confirm && InfoId === 'password')) {
+            if (pass !== values.confirm) {
                 erros.errMessageConfirm = 'As passwords não coincidem.'
                 console.log('erro em confirm')
             }
@@ -88,7 +85,7 @@ export function UserCreation() {
     }
 
     function HandleUserInfo(values, InfoId) {
-        HandleErr(values, InfoId)
+        HandleErr(values)
         if (InfoId === 'email') return setEmail(values.email)
         if (InfoId === 'password') return setPass(values.pass)
         if (InfoId === 'confirm') return setConfirm(values.confirm)
@@ -100,35 +97,7 @@ export function UserCreation() {
     const [pass, setPass] = useState('')
     const [confirm , setConfirm] = useState('')
     let navigate = useNavigate();
-    console.log(email,pass,confirm)
-    console.log(err)
-
-    // return (
-    //     <form onSubmit={async e =>  {
-    //         e.preventDefault();
-    //         const res = await fetch('/api/signup', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify({ email, password: pass, passwordConfirmation: confirm })
-    //         })
-    //         if (res.status === 200) {
-    //             navigate("/signup/username")
-    //         } 
-    //     }}>
-    //         <input type='text' placeholder='Insira o seu email' onChange={(e) => HandleUserInfo({email:e.target.value, pass:pass, confirm:confirm}, 'email')}></input>
-    //         {err.errMessageMail ? <p>{err.errMessageMail}</p> : <span></span>}
-
-    //         <input type='password' placeholder='Insira a Password' onChange={(e) => HandleUserInfo({email:email, pass: e.target.value, confirm: confirm}, 'password')}></input>
-    //         {err.errMessagePass ? <p>{err.errMessagePass}</p> : <span></span>}
-
-    //         <input type='password' placeholder='Confira a Password' onChange={(e) => HandleUserInfo({email: email,pass:pass,confirm:e.target.value}, 'confirm')}></input>
-    //         {err.errMessageConfirm ? <p>{err.errMessageConfirm}</p> : <span></span>}
-
-    //         <input type='submit' ></input>
-    //     </form>  
-    // )
+    console.log(email, pass, confirm)
 
     return (
         <div className={signstyles.App}>
@@ -145,12 +114,17 @@ export function UserCreation() {
                 },
                 body: JSON.stringify({ email, password: pass, passwordConfirmation: confirm })
             })
+            if(res.status===400){
+                const json = await res.json()
+               // console.log(json())
+            }
             if (res.status === 200) {
-                navigate("/signup/username")
+                navigate("/game")
+                //console.log('YES BABY')
             } 
         }}> {/* era uma div */}
   
-                <p className={signstyles.titulo}>SIGN UP</p>
+                <p className={signstyles.titulo}>CRIAR CONTA</p>
   
                     <div className={signstyles.email}>
                       <p className={signstyles.SEmail}>EMAIL</p>
@@ -161,16 +135,16 @@ export function UserCreation() {
                   <div className={signstyles.password}>
                       <p className={signstyles.SPass}>PASSWORD</p>
                       <input type="password" className={signstyles.iPass} onChange={(e) => HandleUserInfo({email:email, pass: e.target.value, confirm: confirm}, 'password')}/>
-                      {err.errMessagePass ? <p className={signstyles.PassInvalida}>PASS INVALIDA</p> : <p></p>}
+                      {err.errMessagePass ? <p className={signstyles.PassInvalida}>PASSWORD INVALIDA</p> : <p></p>}
                   </div>
   
                   <div className={signstyles.password}>
-                      <p className={signstyles.SPass}>CONFIRM PASSWORD</p>
+                      <p className={signstyles.SPass}>CONFIRMAÇÃO DE PASSWORD</p>
                       <input type="password" className={signstyles.iPass} onChange={(e) => HandleUserInfo({email: email, pass: pass, confirm: e.target.value}, 'confirm')}/>
-                      {err.errMessageConfirm ? <p className={signstyles.PassInvalida}>PASS INVALIDA</p> : <p></p>}
+                      {err.errMessageConfirm ? <p className={signstyles.PassInvalida}>PASSWORD INVALIDA</p> : <p></p>}
                   </div>
               
-                <button className={signstyles.letsPlay}>LET'S PLAY!!</button>
+                <button className={signstyles.letsPlay}>VAMOS JOGAR!!</button>
             </form>  {/* era uma div */}
     
     
@@ -200,11 +174,11 @@ export function TitleScreen() {
             LITTLE RED READING HOOD
             </h1>
             </div>
-             <button className={styles.bLogin} onClick={() => navigate('api/login')}>
+             <button className={styles.bLogin} onClick={() => navigate('/api/login')}>
               LOGIN
             </button>
-            <button className={styles.bSignup} onClick={() => navigate('api/signup')  }>
-              SIGN UP
+            <button className={styles.bSignup} onClick={() => navigate('/api/signup')  }>
+              CRIAR CONTA
             </button>
             </div>
     
@@ -225,35 +199,96 @@ export function TitleScreen() {
       ); 
 }
 
-export function UserLogin() {
-        return (
+export function UserLogin(values, InfoId) {
+    const [err, setErr] = useState({})
+    const [email, setEmail] = useState('')
+    // const [user, setUser] = useState('')
+    const [pass, setPass] = useState('')
+    let navigate = useNavigate();
+
+    function HandleErr(values) {
+        setErr( e => {
+            let erros = {}
+            if (!validateEmail(values.email)) {
+                erros.errMessageMail = 'O email inserido não é válido.'
+                console.log('erro em mail')
+            }
+
+            if(checkPasswordStrength(values.pass) < 3) {
+                erros.errMessagePass = 'A password inserida não é válida.'
+                console.log('erro em pass')
+            }
+
+            if (pass !== values.confirm) {
+                erros.errMessageConfirm = 'As passwords não coincidem.'
+                console.log('erro em confirm')
+            }
+
+            return erros;
+
+        })
+        
+    }
+
+    function HandleUserInfo(values, InfoId) {
+        HandleErr(values)
+        if (InfoId === 'email') return setEmail(values.email)
+        if (InfoId === 'password') return setPass(values.pass)
+    }
+
+
+    // if (InfoId === 'email') return setEmail(values.email)
+    // if (InfoId === 'password') return setPass(values.pass)
+          
+    return (
           <div className={logstyles.App}>
             <header className={logstyles.Appheader}>
               
                     <img src={logo} className={logstyles.logo} alt="Little Red Reading Hood"  />
              
-              <div className={logstyles.central}> 
-                <p className={logstyles.titulo}>LOGIN</p>
+              <form className={logstyles.central} onSubmit={async e =>{
+                  e.preventDefault();
+                  //console.log('trying to log in')
+                  const res = await fetch('/api/login', {
+                      method: 'POST',
+                      headers:{
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({ email, password:pass})
+                  })
+                  //console.log('got answer')
+                  if(res.status===400){
+                      const json = await res.json()
+                     // console.log('fds again')
+                  }
+                  if(res.status===200){
+                      console.log('YES BABYYY')
+                      // const json = await res.json() 
+                      // localstorage.setitem('token', json.token)
+                      navigate('/game')
+                  }
+              }}> 
+
+                    <p className={logstyles.titulo}>LOGIN</p>
                       <div className={logstyles.email}>
                         <p className={logstyles.SEmail}>EMAIL</p>
-                        <input type="email" className={logstyles.iEmail}/>
-                        <p className={logstyles.Invalida}>EMAIL INVALIDO</p>
+                        <input type="email" className={logstyles.iEmail} onChange={(e) => HandleUserInfo({email:e.target.value, pass: pass}, 'email')}/>
+                        {/* <p className={logstyles.Invalida}>EMAIL INVÁLIDO</p> */}
                       </div>
     
                     <div className={logstyles.password}>
                         <p className={logstyles.SPass}>PASSWORD</p>
-                        <input type="password" className={logstyles.iPass}/>
-                        <p className={logstyles.Invalida}>PASS INVALIDA</p>
-                        <p className={logstyles.forgot}><a href="ALGUMA CENA">FORGOT MY PASSWORD</a></p>
+                        <input type="password" className={logstyles.iPass} onChange={(e) => HandleUserInfo({email:email, pass: e.target.value}, 'password')}/>
+                        <p className={logstyles.forgot}><a href="ERROR 404, PAG NOT FOUND">ESQUECI-ME DA PASSWORD</a></p>
+                        {(err.errMessageMail || err.errMessagePass) ? <p className={logstyles.Invalida}>EMAIL E/OU PASSWORD INVÁLIDA</p> : <p></p>}
                     </div>
     
-                  <button className={logstyles.letsPlay}>LET'S PLAY!!</button>
-                  <p className={logstyles.create}>NO ACCOUNT? <a href="ALGUMA CENA">CREATE ONE</a></p>
+                  <button className={logstyles.letsPlay}>VAMOS JOGAR!!</button>
+                  <p className={logstyles.create}>NÃO TENS CONTA? <a href="ALGUMA CENA">CRIA UMA!</a></p>
                     
-                </div>
                     
-    
-              
+                </form>
+                    
       
               <div className={logstyles.PTEN}>
                   <button className={logstyles.PT}>PT</button>
@@ -266,10 +301,19 @@ export function UserLogin() {
       
 }
 
+
 const story = [
     {
         id: 1,
-        text: 'parte 1',
-        options: [{id: 3, text: '1'}, {id: 2, text: '2'},] 
+        text: 'parte 1'
+    },
+    {
+        id: 2,
+        text: 'parte 2' 
+    },
+    {
+        id: 3,
+        text: 'parte 3'
     }
+
 ]

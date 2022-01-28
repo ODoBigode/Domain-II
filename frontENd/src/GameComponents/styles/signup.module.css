@@ -49,6 +49,7 @@
   .SEmail{
     position: relative;
     margin-bottom:2px;
+    text-align:left;
   }
   .iEmail{
     width: 500px;
@@ -67,6 +68,7 @@
   .SPass{
     position: relative;
     margin-bottom:2px;
+    text-align:left;
   }
   .iPass{
     width: 500px;

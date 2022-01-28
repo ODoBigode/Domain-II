@@ -1,4 +1,4 @@
-import { React } from "react";
+import React, {useState} from 'react';
 
 export function PresentOptions({options}){
     return <div>
@@ -12,10 +12,13 @@ export function PresentOptions({options}){
 }
 
 export function StoryRender() {
+    const [histo, setHisto] = useState('')
+
+    
     return (
         <div>
             <h1>Project Reading Hood</h1>
-            <p>Story stuff</p>
+            <p>{histo}</p>
         </div>
     )
 }
