@@ -6,6 +6,7 @@ import logo from './GameComponents/styles/logo.svg';
 import styles from './GameComponents/styles/GameStyles.module.css';
 import logstyles from './GameComponents/styles/login.module.css';
 import signstyles from './GameComponents/styles/signup.module.css';
+import { parse } from 'ipaddr.js';
 
 export function UiRender(){
     const [view, setView] = useState('')
@@ -89,15 +90,20 @@ export function UserCreation() {
         if (InfoId === 'email') return setEmail(values.email)
         if (InfoId === 'password') return setPass(values.pass)
         if (InfoId === 'confirm') return setConfirm(values.confirm)
+
+        if (validateEmail && checkPasswordStrength >= 3) {
+            setUser()
+        }
     }
 
     const [err, setErr] = useState({})
     const [email, setEmail] = useState('')
-    // const [user, setUser] = useState('')
+    
     const [pass, setPass] = useState('')
     const [confirm , setConfirm] = useState('')
     let navigate = useNavigate();
-    console.log(email, pass, confirm)
+    const [user, setUser] = useState({email: email, pass:pass})
+    console.log(email, pass, confirm, user)
 
     return (
         <div className={signstyles.App}>
@@ -107,6 +113,10 @@ export function UserCreation() {
            
             <form className={signstyles.central} onSubmit={async e =>  {
             e.preventDefault();
+
+            console.log(user)
+
+            localStorage.setItem('user', 'user')
             const res = await fetch('/api/signup', {
                 method: 'POST',
                 headers: {

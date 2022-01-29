@@ -6,7 +6,9 @@ const URL = process.env.MONGO_URL ?? "mongodb://localhost:27017"
 
 
 let client
+async function createSession(){
 
+}
 
 async function connectToMongo() {
     try {
@@ -42,7 +44,7 @@ function validateEmail(email) {
 }
 
 function validatePassword(password){
-  if(password.length <8) return false
+  if(password.length < 8) return false
     const regexes= [
       /[a-z]/g,
       /[A-Z]/g,
@@ -58,7 +60,7 @@ function validatePassword(password){
       for(const result of testes){
       score = result ? score + 1 : score
       }
-    return score >3
+    return score > 3
 }
 
   function validateConfirmation(passwordConfirmation, password) {
@@ -67,8 +69,8 @@ function validatePassword(password){
 
 async function insertUserMongo(user) {
     const collection = await getMongoCollection('ProjectReadingHood', 'users')
-    collection.insertOne(user)
-    return;
+    const result = await collection.insertOne(user)
+    return  // result.insertedUser
 }
 
 app.use(express.json())
@@ -80,16 +82,22 @@ app.post('/api/signup', async (req, res) => {
     const { email, password, passwordConfirmation } = req.body
 
     console.log("validateEmail", email, password, passwordConfirmation)
-    if (!validateEmail(email) || !validatePassword(password) || !validateConfirmation(passwordConfirmation, password)) return res.sendStatus(400)
+    if (!validateEmail(email) || !validatePassword(password) || !validateConfirmation(passwordConfirmation, password)){
+        console.log('validações falharam')
+        return res.sendStatus(400)
+    }
 
-    if ((await FindUserByEmail(email)) || email.length == 0 || password.length == 0) return res.sendStatus(400)
+    if ((await FindUserByEmail(email)) || email.length == 0 || password.length == 0) {
+        console.log('utilzador já existe')
+        return res.sendStatus(400)
+    }
 
     if (password !== passwordConfirmation) return res.status(400).json({errMessagePass})
 
     if (password === passwordConfirmation && validateEmail(email)) {
         insertUserMongo({email, password})
 
-        return res.sendStatus(200)
+        return res.status(200).json({Menssagem: 'User stored'})
 
     }
 })
@@ -118,10 +126,14 @@ app.post('/api/login', async (req, res) =>{
        return res.sendStatus(400)
     }
     // eventualmente returnar um "_id"
-    const token = createSession( )
+    const token = createSession()
     res.status(200).json({token: user._id})
 })
-// buscar intems ao bau (caso implementado)
+// the game
+
+app.post('/api/game', async (req, res) => {
+    
+})
 
 // ler historia do inicio (includes choices made require = ('Mongodb' WORKING)) 
 
