@@ -63,7 +63,7 @@ function validatePassword(password){
     return score > 3
 }
 
-  function validateConfirmation(passwordConfirmation, password) {
+function validateConfirmation(passwordConfirmation, password) {
         return passwordConfirmation === password 
 }
 
@@ -72,6 +72,8 @@ async function insertUserMongo(user) {
     const result = await collection.insertOne(user)
     return  // result.insertedUser
 }
+
+
 
 app.use(express.json())
 
@@ -131,9 +133,11 @@ app.post('/api/login', async (req, res) =>{
 })
 // the game
 
-app.post('/api/game', async (req, res) => {
-    
+app.get('/api/game', require('./sendStoryFrontend'), (req, res) => {
+  console.log(req.body)
 })
+
+
 
 // ler historia do inicio (includes choices made require = ('Mongodb' WORKING)) 
 
